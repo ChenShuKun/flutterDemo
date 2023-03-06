@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:myapp/components/record/recod_class.dart';
 import 'package:myapp/tools/tips.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -54,7 +55,6 @@ class _RecordAudioPageState extends State<RecordAudioPage> {
           ElevatedButton(
               onPressed: () {
                 recordAction();
-                Tips.showToast("开始录音");
               },
               child: const Text("录音")),
           ElevatedButton(
@@ -117,7 +117,8 @@ class _RecordAudioPageState extends State<RecordAudioPage> {
       return;
     }
 
-    Directory tempDir = await getTemporaryDirectory();
+    Tips.showToast("开始录音");
+    Directory tempDir = await getApplicationDocumentsDirectory();
     var time = DateTime.now().millisecondsSinceEpoch;
     String path = '${tempDir.path}-$time${ext[Codec.aacADTS.index]}';
 

@@ -332,7 +332,7 @@ class _BaseWidgetStudyState extends State<BaseWidgetStudy> {
             side: BorderSide(
                 color: Colors.green,
                 width: 5,
-                strokeAlign: StrokeAlign.outside,
+                // strokeAlign: StrokeAlign.outside,
                 style: BorderStyle.solid)),
         shadowColor: Colors.yellow, // 阴影颜色
         elevation: 10, // 阴影高度
