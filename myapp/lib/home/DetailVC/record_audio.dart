@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:myapp/components/record/play_class.dart';
 import 'package:myapp/components/record/recod_class.dart';
 import 'package:myapp/tools/tips.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,16 +22,21 @@ class _RecordAudioPageState extends State<RecordAudioPage> {
   FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
   FlutterSoundPlayer playerModule = FlutterSoundPlayer();
   RecorderState _recordState = RecorderState.isStopped; //录音状态
-
+  String statusInfoStr = "没有录音";
   @override
   void initState() {
-    init();
+    // init();
+    Record().initRecorder();
+    Player().initPlayer();
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+    Record().disposeRecorder();
+    Player().disposePlayer();
+
     recorderModule.closeRecorder();
     playerModule.closePlayer();
   }
@@ -49,35 +55,98 @@ class _RecordAudioPageState extends State<RecordAudioPage> {
   Widget _bodyContent() {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ElevatedButton(
-              onPressed: () {
-                recordAction();
-              },
-              child: const Text("录音")),
-          ElevatedButton(
-              onPressed: () {
-                stopRecordAction();
-                Tips.showToast("结束录音");
-              },
-              child: const Text("结束录音")),
-          ElevatedButton(
-              onPressed: () {
-                deleteAction();
-              },
-              child: const Text("删除")),
-          ElevatedButton(
-              onPressed: () {
-                playAction();
-              },
-              child: const Text("播放")),
+          const Text("原来的"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    recordAction();
+                  },
+                  child: const Text("录音")),
+              ElevatedButton(
+                  onPressed: () {
+                    stopRecordAction();
+                    Tips.showToast("结束录音");
+                  },
+                  child: const Text("结束录音")),
+              ElevatedButton(
+                  onPressed: () {
+                    deleteAction();
+                  },
+                  child: const Text("删除")),
+              ElevatedButton(
+                  onPressed: () {
+                    playAction();
+                  },
+                  child: const Text("播放")),
+            ],
+          ),
+          Text("封装：$statusInfoStr"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Tips.showToast("开始录音");
+                    setState(() {
+                      statusInfoStr = "录制中";
+                    });
+                    Record().startRecord(callBack: (str) {
+                      print("录制中");
+                    });
+                  },
+                  child: const Text("录音-2")),
+              ElevatedButton(
+                  onPressed: () {
+                    Tips.showToast("结束录音");
+                    Record().stopRecord();
+                    setState(() {
+                      statusInfoStr = "录制结束";
+                    });
+                  },
+                  child: const Text("结束录音-2")),
+              ElevatedButton(
+                  onPressed: () {
+                    Tips.showToast("删除录音");
+                  },
+                  child: const Text("删除-2")),
+              ElevatedButton(
+                  onPressed: () {
+                    String path = Record().recordPath ?? "";
+                    Player().startPlay(
+                      path,
+                      callBack: (code, message) {
+                        if (code == 199) {
+                          setState(() {
+                            statusInfoStr = "开始播放";
+                          });
+                        } else if (code == 200) {
+                          setState(() {
+                            statusInfoStr = "播放完毕";
+                          });
+                        } else {
+                          setState(() {
+                            statusInfoStr = message;
+                          });
+                        }
+                      },
+                    );
+                  },
+                  child: const Text("播放-2")),
+            ],
+          ),
         ],
       ),
     );
   }
 
+  ///--封装 开始
+
+  ///--封装 结束
   void init() async {
     //开启录音
     await recorderModule.openRecorder();
