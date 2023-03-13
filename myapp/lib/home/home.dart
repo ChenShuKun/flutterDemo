@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myapp/home/DetailVC/Hero.dart';
+import 'package:myapp/home/DetailVC/getx_study.dart';
 import 'package:myapp/home/DetailVC/image_picker.dart';
+import 'package:myapp/home/DetailVC/news/news_list.dart';
 import 'package:myapp/home/DetailVC/record_audio.dart';
 import 'package:myapp/home/DetailVC/web_socket.dart';
 
@@ -85,6 +88,8 @@ class _HomePageState extends State<HomeDemo> {
       {"name": "image picker", "subName": "获取相册", "tag": "130"},
       {"name": "WebSocket", "subName": "socket demo", "tag": "140"},
       {"name": "录音和播放", "subName": "学习录音和播放", "tag": "150"},
+      {"name": " GetX ", "subName": "学习GetX", "tag": "160"},
+      {"name": " 新闻列表 ", "subName": "学习GetX 做新闻列表", "tag": "170"},
     ];
     return list;
   }
@@ -132,6 +137,16 @@ class _HomePageState extends State<HomeDemo> {
             return const RecordAudioPage();
           },
         ));
+        break;
+      case 160:
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return const GetXStudyPage();
+          },
+        ));
+        break;
+      case 170:
+        Get.to(const NewsListPage());
         break;
       default:
     }

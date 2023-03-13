@@ -45,6 +45,8 @@ dependencies:
   audio_session: ^0.1.13 #音频硬件配置
   permission_handler: ^10.2.0 #权限的使用
   path_provider: ^2.0.13 #本地文件路径
+  get: ^4.6.5   #getx 
+
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:myapp/home/home.dart';
 // import 'package:myapp/study/data_table.dart';
 // import 'package:myapp/study/study.dart';
@@ -6,7 +7,9 @@ import 'package:myapp/home/home.dart';
 import 'package:myapp/tools/tips.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const GetMaterialApp(
+    home: MyApp(),
+  ));
   Tips.configLoading();
 }
 
